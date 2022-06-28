@@ -1,4 +1,4 @@
-import { useContext,useState } from "react";
+import { useState } from "react";
 import { useNavigate,Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
@@ -13,12 +13,8 @@ export default function SignUp(){
 	const [senha, setSenha] = useState("");
 	const [senha2, setSenha2] = useState("");
 
-    function registrar(event){
+    function signUp(event){
         event.preventDefault();
-        if(senha !== senha2){
-            alert("As senhas devem ser iguais!")
-            return;
-        }
         const body = {
             email: email,
             name: nome,
@@ -29,7 +25,11 @@ export default function SignUp(){
             "http://localhost:5001/signup",
             body
           );
-          promise.then(()=> navigate("/")).catch(()=>{alert("Ocorreu algum erro, verfifque suas respostas e tente novamente")})
+          promise.then((a)=> {alert(a.data);navigate("/")})
+          .catch((e)=>
+            {
+                alert(e.response.data);  
+            })
     }
 
     return(
@@ -37,7 +37,7 @@ export default function SignUp(){
             <Title>
                 MyWallet
             </Title>
-            <form onSubmit={registrar}>
+            <form onSubmit={signUp}>
                 <input type="text" placeholder="Nome" value={nome} onChange={e => setNome(e.target.value)}/>
                 <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)}/>
                 <input type="password" placeholder="Senha" value={senha} onChange={e => setSenha(e.target.value)}/>
@@ -107,6 +107,8 @@ align-items: center;
 `
 const Title = styled.div`
 margin-top: 150px;
+margin-bottom: 10px;
+
 font-family: 'Saira Stencil One', sans-serif;
 font-size: 32px;
 font-weight: 400;
