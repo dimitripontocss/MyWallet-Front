@@ -15,13 +15,27 @@ function translate(tipo){
 export default function NewTransference(){
     const { tipo } = useParams();
     const type = translate(tipo);
-    console.log(type)
+    const { token } = useContext(UserContext);
+    const navigate = useNavigate();
 
     const [valor,setValor]= useState("");
     const [descricao,setDescricao]= useState("");
 
-    function save(){
-
+    function save(event){
+        event.preventDefault();
+        console.log(valor,descricao,type,token)
+        const body = {
+            amount: valor,
+            description: descricao,
+            type: type
+        }
+        axios.post("http://localhost:5001/register",body, {
+            headers: {
+              'Authorization': `Bearer ${token}` 
+            }
+          })
+          .then((e)=>{alert(e.data); navigate("/home")})
+          .catch((e)=>{alert(e.response.data)});
     }
 
     return(
