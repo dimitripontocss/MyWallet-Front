@@ -8,7 +8,7 @@ export default function Login(){
 
     const navigate = useNavigate();
 
-    const{ setToken } = useContext(UserContext);
+    const{ setToken,setUsername } = useContext(UserContext);
 
     const [email, setEmail] = useState("");
 	const [senha, setSenha] = useState("");
@@ -23,9 +23,11 @@ export default function Login(){
             "http://localhost:5001/login",
             body
           );
-          promise.then(()=> 
+          promise.then((response)=> 
           {
-            console.log(promise);
+            setToken(response.data.token);
+            setUsername(response.data.name);
+            navigate("/home");
           })
           .catch((e)=>
             {

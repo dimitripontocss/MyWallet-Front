@@ -5,23 +5,32 @@ import axios from "axios";
 import UserContext from "../Context/UserContext";
 
 export default function Home(){
-    const {nome,token} = useContext(UserContext)
-    const [register,setRegister] = useState([])
+    const navigate = useNavigate();
 
+    const {username,token} = useContext(UserContext)
+    const [register,setRegister] = useState([])
+    console.log(username,token)
+
+    if(username === null || token === null){
+        console.log(username,token)
+        navigate("/");
+    }
     useEffect(() => {
-        /*const promise = axios.get("http://localhost:5001/register", {
+        const promise = axios.get("http://localhost:5001/register", {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
-        promise.then((response) => setRegister(response.data) );*/
+        promise.then((response) => setRegister(response.data) );
     }, [])
+
+    
 
 
     return(
         <Container>
             <Header>
-                <p>Olá, {nome}</p>
+                <p>Olá, {username}</p>
                 <ion-icon name="exit-outline"></ion-icon>
             </Header>
             <Register>
@@ -35,11 +44,11 @@ export default function Home(){
                 }
             </Register>
             <Buttons>
-                <div>
+                <div onClick={()=>{navigate("/adicionar/entrada")}}>
                     <ion-icon name="add-circle-outline"></ion-icon>
                     <p>Nova entrada</p>
                 </div>
-                <div>
+                <div onClick={()=>{navigate("/adicionar/saida")}}>
                     <ion-icon name="remove-circle-outline"></ion-icon>
                     <p>Nova saída</p>
                 </div>
