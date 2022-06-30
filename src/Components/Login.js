@@ -9,6 +9,12 @@ export default function Login(){
     const navigate = useNavigate();
 
     const{ setToken,setUsername } = useContext(UserContext);
+    const user = JSON.parse(localStorage.getItem("user"));
+    if(user !== null){
+        setToken(user.token)
+        setUsername(user.name)
+        navigate("/home")
+    }
 
     const [email, setEmail] = useState("");
 	const [senha, setSenha] = useState("");
@@ -27,6 +33,8 @@ export default function Login(){
           {
             setToken(response.data.token);
             setUsername(response.data.name);
+            const user = JSON.stringify(response.data);
+            localStorage.setItem("user", user);
             navigate("/home");
           })
           .catch((e)=>

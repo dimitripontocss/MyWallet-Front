@@ -43,6 +43,7 @@ export default function NewTransference(){
         {
             type === "income" ?
             <Container>
+                <div onClick={()=>{navigate(-1)}}><ion-icon name="arrow-back-outline"></ion-icon></div>
                 <Title>
                     Nova entrada
                 </Title>
@@ -54,6 +55,7 @@ export default function NewTransference(){
             </Container> 
             : 
             <Container>
+                <div onClick={()=>{navigate(-1)}}><ion-icon name="arrow-back-outline"></ion-icon></div>
                 <Title>
                     Nova saída
                 </Title>
@@ -72,6 +74,16 @@ const Container = styled.div`
 display: flex;
 flex-direction: column;
 align-items: center;
+
+position: relative;
+    ion-icon{
+        position: absolute;
+        top: 25px;
+        left: 20px;
+
+        font-size: 26px;
+        color: #FFFFFF;
+    }
     form{
         display: flex;
         flex-direction: column;

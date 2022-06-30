@@ -11,10 +11,15 @@ export default function Home(){
     const [register,setRegister] = useState([])
     const [total,setTotal] = useState(0)
 
-    if(username === null || token === null){
-        console.log(username,token)
-        navigate("/");
+    const user = JSON.parse(localStorage.getItem("user"));
+    if(user !== null){
+        setToken(user.token)
+        setUsername(user.name)
+    }else{
+        navigate("/")
     }
+
+
     useEffect(() => {
         const promise = axios.get("http://localhost:5001/register", {
             headers: {
@@ -34,8 +39,7 @@ export default function Home(){
     }, [])
 
     function logoff(){
-        setToken("");
-        setUsername("");
+        localStorage.clear(); 
         navigate("/");
     }
 
