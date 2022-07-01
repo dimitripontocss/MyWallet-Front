@@ -23,7 +23,6 @@ export default function NewTransference(){
 
     function save(event){
         event.preventDefault();
-        console.log(valor,descricao,type,token)
         const body = {
             amount: valor,
             description: descricao,
