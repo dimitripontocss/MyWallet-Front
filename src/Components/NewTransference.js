@@ -29,7 +29,7 @@ export default function NewTransference(){
             description: descricao,
             type: type
         }
-        axios.post("http://localhost:5001/register",body, {
+        axios.post("https://multicultural-toonie-22697.herokuapp.com/https://back-project-mwallet.herokuapp.com/register",body, {
             headers: {
               'Authorization': `Bearer ${token}` 
             }

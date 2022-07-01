@@ -21,7 +21,7 @@ export default function Home(){
 
 
     useEffect(() => {
-        const promise = axios.get("http://localhost:5001/register", {
+        const promise = axios.get("https://multicultural-toonie-22697.herokuapp.com/https://back-project-mwallet.herokuapp.com/register", {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -30,7 +30,7 @@ export default function Home(){
     }, [])
 
     useEffect(() => {
-        const promise = axios.get("http://localhost:5001/total", {
+        const promise = axios.get("https://multicultural-toonie-22697.herokuapp.com/https://back-project-mwallet.herokuapp.com/total", {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

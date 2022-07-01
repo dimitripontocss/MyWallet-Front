@@ -22,7 +22,7 @@ export default function SignUp(){
             passwordConfirmation: senha2
         }
         const promise = axios.post(
-            "http://localhost:5001/signup",
+            "https://multicultural-toonie-22697.herokuapp.com/https://back-project-mwallet.herokuapp.com/signup",
             body
           );
           promise.then((a)=> {alert(a.data);navigate("/")})
