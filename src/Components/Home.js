@@ -4,12 +4,15 @@ import styled from "styled-components";
 import axios from "axios";
 import UserContext from "../Context/UserContext";
 
+const linkBack = "https://multicultural-toonie-22697.herokuapp.com/https://back-project-mwallet.herokuapp.com"
+
 export default function Home(){
     const navigate = useNavigate();
 
     const {username,token,setToken,setUsername} = useContext(UserContext)
     const [register,setRegister] = useState([])
     const [total,setTotal] = useState(0)
+    const [refresh,setRefresh] = useState(0)
 
     const user = JSON.parse(localStorage.getItem("user"));
     if(user !== null){
@@ -27,7 +30,7 @@ export default function Home(){
             }
         })
         promise.then((response) => setRegister(response.data) );
-    }, [])
+    }, [refresh])
 
     useEffect(() => {
         const promise = axios.get("https://multicultural-toonie-22697.herokuapp.com/https://back-project-mwallet.herokuapp.com/total", {
@@ -36,11 +39,22 @@ export default function Home(){
             }
         })
         promise.then((response) => setTotal(response.data.total) );
-    }, [])
+    }, [refresh])
 
     function logoff(){
         localStorage.clear(); 
         navigate("/");
+    }
+
+    async function deleteRegister(_id){
+        if(window.confirm("Quer mesmo deletar o registro?")){
+            await axios.delete(`https://multicultural-toonie-22697.herokuapp.com/https://back-project-mwallet.herokuapp.com/delete/${_id}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        setRefresh(refresh + 1);
+        }
     }
 
     return(
@@ -56,7 +70,7 @@ export default function Home(){
                             <Txt><p>Não há registros de<br/>
                             entrada ou saída</p></Txt> 
                             :
-                            register.map((value,index)=> <RenderRegisters key={index} value={value}/>)
+                            register.map((value,index)=> <RenderRegisters key={index} value={value} deleteRegister={deleteRegister}/>)
                     }
                 </Register>
                     {
@@ -91,28 +105,34 @@ function RenderTotal({value}){
     )
 }
 
-function RenderRegisters({value}){
+function RenderRegisters({value, deleteRegister}){
     return(
     <>
-    {value.type === "income" ? <Income value={value}/> : <Outcome value={value}/>}
+    {value.type === "income" ? <Income value={value} deleteRegister={deleteRegister}/> : <Outcome value={value} deleteRegister={deleteRegister}/>}
     </>
     )
 }
 
-function Income({value}){
+function Income({value ,deleteRegister}){
     return(
         <In>
             <Data><p>{value.date}</p>{value.description}</Data>
-            <span>{value.amount}</span>
+            <div>
+                <span>{value.amount}</span>
+                <div onClick={()=> deleteRegister(value._id)}><ion-icon name="trash-outline"></ion-icon></div>
+            </div>
         </In>
     )
 }
 
-function Outcome({value}){
+function Outcome({value,deleteRegister}){
     return(
         <Out>
             <Data><p>{value.date}</p>{value.description}</Data>
-            <span>{value.amount}</span>
+            <div>
+                <span>{value.amount}</span>
+                <div onClick={()=> deleteRegister(value._id)}><ion-icon name="trash-outline"></ion-icon></div>
+            </div>
         </Out>
     )
 }
@@ -133,6 +153,7 @@ margin-top: 12px;
         color:#03AC00;
     }
     div{
+        display: flex;
         p{
             color:#C6C6C6;
             font-size: 16px;
@@ -153,6 +174,7 @@ margin-top: 12px;
         color:#C70000;
     }
     div{
+        display: flex;
         p{
             color:#C6C6C6;
             font-size: 16px;
